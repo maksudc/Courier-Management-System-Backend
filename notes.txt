@@ -1,0 +1,3 @@
+12-6-2012
+->replacing encryption with codeignitor encryption class
+->
