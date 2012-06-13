@@ -142,15 +142,6 @@ EOT;
 
 
 
-include_once 'CategoryServices.php';
-include_once 'CommentServices.php';
-include_once 'EventServices.php';
-
-include 'TalkServices.php';
-include 'UserServices.php';
-include 'AdminServices.php';
-include 'AttendeeServices.php';
-
 //POST route
 $app->post('/post', function () {
 
