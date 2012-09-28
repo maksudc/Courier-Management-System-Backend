@@ -12,13 +12,31 @@ class Test extends CI_Controller {
     }
 
     public function see_spec() {
-        
-        $content = file_get_contents('http://test.sentisol.com/cwc/index.php/android/getTaskHistory?username=cwcuser1&returnType=json');
-        
-        $content = json_decode($content,true);
-        
-        print_r($content[0]);
-        
+
+        $contents = file_get_contents('http://test.sentisol.com/cwc/index.php/android/getTaskHistory?username=cwcuser1&returnType=json');
+
+        $contents = json_decode($contents, true);
+
+        foreach ($contents as $content) {
+
+            foreach ($content as $key => $value) {
+
+                if ($key != 'id') {
+
+                    $data[$key] = $value;
+                }
+            }
+            $data['taskid'] = NULL;
+
+            $this->load->model('test_data');
+
+            if ($this->test_data->insert_data($data)) {
+
+                echo "done";
+            } else {
+             echo "cant't be done"   ;
+            }
+        }
     }
 
 }

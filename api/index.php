@@ -140,8 +140,94 @@ EOT;
         });
 
 
+$app->get('/register', function() use($app) {
 
+            include_once 'Usermodel.php';
+            $user = new UserModel($app->db);
 
+            $data['username'] = $_GET['username'];
+            $data['password'] = $_GET['password'];
+            $data['email'] = $_GET['email'];
+
+            if ($user->isValidUsername($data['username'])) {
+
+                $response = array('status' => 'Failure');
+                $response = json_encode($response);
+                echo $response;
+            } else {
+
+                if ($user->insert($data)) {
+
+                    $response = array('status' => 'Success');
+                    $response = json_encode($response);
+                    echo $response;
+                }
+            }
+        });
+
+$app->get('/login', function()use($app) {
+
+            $data['username'] = $_GET['username'];
+            $data['password'] = $_GET['password'];
+
+            include_once 'Usermodel.php';
+            $user = new UserModel($app->db);
+
+            if (!$user->isValidUser($data['username'], $data['password'])) {
+
+                $response = array('status' => 'false');
+                $response = json_encode($response);
+                echo $response;
+            } else {
+
+                $user->setActiveUser($data['username'], $data['password']);
+
+                $response = array('status' => 'true');
+                $response = json_encode($response);
+                echo $response;
+            }
+        });
+
+$app->get('/logout', function()use($app) {
+
+            include_once 'UserModel.php';
+            $user = new UserModel($app->db);
+
+            $data['username'] = $_GET['username'];
+
+            if ($user->isActiveUser($data['username'])) {
+
+                $user->unsetActiveUser($data['username']);
+                
+                echo json_encode(array(
+                        'status'=>'success'
+                ));
+            }
+        });
+
+$app->get('/getTaskList', function()use($app) {
+            $data['username'] = $_GET['username'];
+            $data['duedate'] = $_GET['duedate'];
+
+            include_once 'TaskModel.php';
+            $task = new TaskModel($app->db);
+
+            $tasks = $task->getTaskList($data['username'], $data['duedate']);
+            $tasks = json_encode($tasks);
+            echo $tasks;
+        });
+
+$app->get('/getTaskHistory', function()use($app) {
+
+            $data['username'] = $_GET['username'];
+
+            include_once 'TaskModel.php';
+            $task = new TaskModel($app->db);
+
+            $tasks = $task->getTaskHistory($data['username']);
+            $tasks = json_encode($tasks);
+            echo $tasks;
+        });
 //POST route
 $app->post('/post', function () {
 
