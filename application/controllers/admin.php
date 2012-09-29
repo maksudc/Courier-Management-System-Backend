@@ -5,18 +5,19 @@
  *
  * @author Md.Maksud Alam Chodhury
  */
-class Admin extends CI_Controller{
+class Admin extends CI_Controller {
 
     public function dashboard() {
-        
-    }
 
-    public function block_user() {
-        
-    }
+        $flash_message = $this->session->userdata('flash_message');
+        $this->session->unset_userdata('flash_message');
 
-    public function set_permission() {
-        
+        $this->load->view('templates/header');
+        $this->load->view('admin/dashboard', array(
+            'flash_message' => $flash_message,
+            'email' => $this->session->userdata('email'),
+        ));
+        $this->load->view('templates/footer');
     }
 
     public function track_user() {

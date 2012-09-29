@@ -63,9 +63,41 @@ class Authentication extends CI_Controller {
                 $this->session->set_userdata('name', $user_info['name']);
                 $this->session->set_userdata('email', $user_info['email']);
                 $this->session->set_userdata('phone', $user_info['phone']);
-                $this->session->set_userdata('credit_card_number',$this->encrypt->encode($user_info['credit_card_number']));
+                $this->session->set_userdata('credit_card_number', $this->encrypt->encode($user_info['credit_card_number']));
 
                 redirect('user/profile');
+            }
+        }
+    }
+
+    public function admin_login() {
+
+        $this->form_validation->set_rules('email', 'Email', 'required');
+        $this->form_validation->set_rules('password', 'Password', 'required');
+        if ($this->form_validation->run() == FALSE) {
+
+
+            $this->load->view('templates/header');
+            $this->load->view('admin/login');
+            $this->load->view('templates/footer');
+        } else {
+
+            $email = $this->input->post('email', true);
+            $password = $this->input->post('password', true);
+
+            $this->load->model('admin_model');
+            $admin = $this->admin_model->get_admin($email, $password);
+            if (!$admin) {
+                $this->load->view('templates/header');
+                $this->load->view('admin/login');
+                $this->load->view('templates/footer');
+            } else {
+                
+                $this->session->set_userdata('admin_id',$admin['admin_id']);
+                $this->session->set_userdata('email',$admin['email']);
+     
+                $this->session->set_userdata('flash_message','Welcome '.$admin['email'].'  <br/>You are Successfully Successfully verified');
+                redirect('admin/dashboard');
             }
         }
     }
