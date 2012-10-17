@@ -3,79 +3,38 @@
 class User_model extends CI_Model {
 
     var $user_id;
-    var $name;
+    var $username;
     var $password;
     var $email;
-    var $phone;
-    var $photo;
-    var $credit_card_number;
-    var $type;
-    var $status;
 
     public function __construct() {
         parent::__construct();
     }
 
-    public function get_users_info() {
+    public function get_users() {
 
         return $this->db->get('user')
                         ->result_array();
     }
+    
+    public function assign_task($userid,$taskid){
+        
+        return $this->db->insert('user_task',array(
+            'taskid'=>$taskid,
+            'userid'=>$userid
+        ));        
+    }
 
-    public function create_user($name, $password, $email, $phone, $photo, $credit_card_number) {
+    public function create_user($name, $password, $email) {
 
         $this->name = $name;
         $this->password = md5($password);
         $this->email = $email;
-        $this->phone = $phone;
-        $this->photo = $photo;
-        $this->credit_card_number = $credit_card_number;
-        $this->type = 2;
-        $this->status = 0;
-
 
         if (!$this->db->insert('user', $this)) {
             return false;
         }
         return true;
-    }
-
-    public function update_user($password = '', $email = '', $phone = '', $photo = '', $credit_card_number = '') {
-
-        $user = $this->db->get_where('user', array('user_id' => $this->session->userdata('user_id')))->row_array();
-
-        if ($user) {
-
-            foreach ($user as $key => $value) {
-
-                $this->$key = $value;
-            }
-
-            if ($password != '') {
-                $this->password = md5($password);
-            }
-            if ($email != '') {
-                $this->email = $email;
-            }
-            if ($photo != '') {
-                $this->photo = $photo;
-            }
-
-            if ($phone != '') {
-                $this->phone = $phone;
-            }
-
-            if ($credit_card_number != '') {
-                $this->credit_card_number = $credit_card_number;
-            }
-        }
-
-        if (!$this->db->where('user_id', $this->user_id)
-                        ->update('user', $this)) {
-            return false;
-        } else {
-            return true;
-        }
     }
 
     public function delete_user($user_id) {
@@ -90,7 +49,7 @@ class User_model extends CI_Model {
 
     public function get_user_info($user_id) {
 
-        return $this->db->where('user_id', $user_id)
+        return $this->db->where('userid', $user_id)
                         ->get('user')
                         ->row_array();
     }

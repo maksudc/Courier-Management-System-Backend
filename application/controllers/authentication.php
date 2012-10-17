@@ -72,13 +72,17 @@ class Authentication extends CI_Controller {
 
     public function admin_login() {
 
+        if ($this->session->userdata('admin_id')) {
+            redirect('admin/dashboard');
+            exit;
+        }
         $this->form_validation->set_rules('email', 'Email', 'required');
         $this->form_validation->set_rules('password', 'Password', 'required');
         if ($this->form_validation->run() == FALSE) {
 
 
             $this->load->view('templates/header');
-            $this->load->view('admin/login');
+            $this->load->view('admin/standalone_login');
             $this->load->view('templates/footer');
         } else {
 
@@ -92,11 +96,11 @@ class Authentication extends CI_Controller {
                 $this->load->view('admin/login');
                 $this->load->view('templates/footer');
             } else {
-                
-                $this->session->set_userdata('admin_id',$admin['admin_id']);
-                $this->session->set_userdata('email',$admin['email']);
-     
-                $this->session->set_userdata('flash_message','Welcome '.$admin['email'].'  <br/>You are Successfully Successfully verified');
+
+                $this->session->set_userdata('admin_id', $admin['admin_id']);
+                $this->session->set_userdata('email', $admin['email']);
+
+                $this->session->set_userdata('flash_message', 'Welcome ' . $admin['email'] . '  <br/> to Your Dashboard');
                 redirect('admin/dashboard');
             }
         }
@@ -104,11 +108,11 @@ class Authentication extends CI_Controller {
 
     public function logout() {
 
-        if ($this->session->userdata('session_id')) {
+        if ($this->session->userdata('admin_id')) {
 
             $this->session->sess_destroy();
 
-            redirect('authentication/login');
+            redirect('authentication/admin_login');
         }
     }
 

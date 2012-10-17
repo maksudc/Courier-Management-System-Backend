@@ -9,7 +9,8 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/datepicker.css"/>
         <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/simple_overlay.css"/>
         <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/bootstrap.css"/>
-        
+        <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/app.css">
+
         <script src="<?php echo base_url(); ?>/assets/js/jquery-1.7.1.js"></script>
         <script src="<?php echo base_url(); ?>/assets/js/bootstrap-transition.js"></script>
         <script src="<?php echo base_url(); ?>/assets/js/bootstrap-alert.js"></script>
@@ -24,7 +25,10 @@
         <script src="<?php echo base_url(); ?>/assets/js/bootstrap-carousel.js"></script>
         <script src="<?php echo base_url(); ?>/assets/js/bootstrap-typeahead.js"></script>
         <script src="<?php echo base_url(); ?>/assets/js/select2.js"></script>
-        <script src="<?php echo base_url(); ?>/assets/js/bootstrap-datepicker.js"></script>    
-    </head>
+        <script src="<?php echo base_url(); ?>/assets/js/bootstrap-datepicker.js"></script>  
+
     <body>
-        <?php $this->load->view('admin/top_navigation');?>
+        <?php $this->load->view('admin/top_navigation'); ?>
+        <div class="container">
+            <div class="content">
+                <div class="row">
